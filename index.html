@@ -1,0 +1,1212 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Everything comes from this site's own files: no scripts, styles, fonts or pictures from anyone else. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <title>Crypten — Encrypt everything. Lose nothing.</title>
+  <meta name="description" content="Crypten encrypts files, folders and whole workspaces with AES-256-GCM, checks every result with SHA3-512 and never overwrites a thing. Free for everyone, forever, on Windows and Linux.">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#050a17" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f7faff" media="(prefers-color-scheme: light)">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Crypten — Encrypt everything. Lose nothing.">
+  <meta property="og:description" content="Free file, folder and workspace encryption that verifies every result and never overwrites a thing.">
+  <link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="img/favicon-16.png" sizes="16x16" type="image/png">
+  <link rel="stylesheet" href="css/site.css">
+  <script src="js/theme.js"></script>
+  <script src="js/qr.js" defer></script>
+  <script src="js/site.js" defer></script>
+</head>
+<body>
+<!-- Line icons: the path data of the app's Glyph.java (README.md, "Icons") on its 24 x 24 grid; download, menu, copy,
+     mail, monitor, phone and network are the website's own, drawn the same way. -->
+<svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <symbol id="g-shield-lock" viewBox="0 0 24 24"><path d="M12 2.9 L19.1 5.7 V11.3 C19.1 15.9 16.1 19.5 12 21.1 C7.9 19.5 4.9 15.9 4.9 11.3 V5.7 Z M10 11.3 H14 A0.9 0.9 0 0 1 14.9 12.2 V14.9 A0.9 0.9 0 0 1 14 15.8 H10 A0.9 0.9 0 0 1 9.1 14.9 V12.2 A0.9 0.9 0 0 1 10 11.3 Z M10.4 11.3 V9.9 A1.6 1.6 0 0 1 13.6 9.9 V11.3 M12 13.55 h0.01"/></symbol>
+  <symbol id="g-shield-check" viewBox="0 0 24 24"><path d="M12 2.9 L19.1 5.7 V11.3 C19.1 15.9 16.1 19.5 12 21.1 C7.9 19.5 4.9 15.9 4.9 11.3 V5.7 Z M8.9 12.1 L11.1 14.3 L15.3 10"/></symbol>
+  <symbol id="g-layers" viewBox="0 0 24 24"><path d="M12 3.6 L20.4 8 L12 12.4 L3.6 8 Z M3.6 12 L12 16.4 L20.4 12 M3.6 16 L12 20.4 L20.4 16"/></symbol>
+  <symbol id="g-file" viewBox="0 0 24 24"><path d="M14 3.2 H7.3 A1.8 1.8 0 0 0 5.5 5 V19 A1.8 1.8 0 0 0 7.3 20.8 H16.7 A1.8 1.8 0 0 0 18.5 19 V7.7 Z M14 3.2 V7.7 H18.5 M8.6 11.8 H15.4 M8.6 15.2 H13.2"/></symbol>
+  <symbol id="g-file-lock" viewBox="0 0 24 24"><path d="M11.2 20.8 H7.3 A1.8 1.8 0 0 1 5.5 19 V5 A1.8 1.8 0 0 1 7.3 3.2 H14 L18.5 7.7 V11 M14 3.2 V7.7 H18.5 M8.6 11.8 H14 M8.6 15.2 H10.8 M14.4 15.1 H19.4 A1.1 1.1 0 0 1 20.5 16.2 V19.8 A1.1 1.1 0 0 1 19.4 20.9 H14.4 A1.1 1.1 0 0 1 13.3 19.8 V16.2 A1.1 1.1 0 0 1 14.4 15.1 Z M15 15.1 V13.6 A1.9 1.9 0 0 1 18.8 13.6 V15.1 M16.9 18 h0.01"/></symbol>
+  <symbol id="g-folder-lock" viewBox="0 0 24 24"><path d="M11.2 19.4 H5.2 A1.8 1.8 0 0 1 3.4 17.6 V7.2 A1.8 1.8 0 0 1 5.2 5.4 H9.4 L11.4 7.6 H18.8 A1.8 1.8 0 0 1 20.6 9.4 V11.2 M14.4 15.1 H19.4 A1.1 1.1 0 0 1 20.5 16.2 V19.8 A1.1 1.1 0 0 1 19.4 20.9 H14.4 A1.1 1.1 0 0 1 13.3 19.8 V16.2 A1.1 1.1 0 0 1 14.4 15.1 Z M15 15.1 V13.6 A1.9 1.9 0 0 1 18.8 13.6 V15.1 M16.9 18 h0.01"/></symbol>
+  <symbol id="g-doc-check" viewBox="0 0 24 24"><path d="M11.2 20.8 H7.3 A1.8 1.8 0 0 1 5.5 19 V5 A1.8 1.8 0 0 1 7.3 3.2 H14 L18.5 7.7 V11 M14 3.2 V7.7 H18.5 M8.6 11.8 H14 M8.6 15.2 H10.8 M20.7 17.1 A3.7 3.7 0 1 1 13.3 17.1 A3.7 3.7 0 1 1 20.7 17.1 Z M15.3 17.2 L16.5 18.4 L18.8 15.9"/></symbol>
+  <symbol id="g-key" viewBox="0 0 24 24"><path d="M11.4 16.3 A3.7 3.7 0 1 1 4 16.3 A3.7 3.7 0 1 1 11.4 16.3 Z M10.3 13.7 L19.6 4.4 M16.3 7.7 L18.6 10 M14 10 L15.8 11.8"/></symbol>
+  <symbol id="g-padlock" viewBox="0 0 24 24"><path d="M7.6 10.6 H16.4 A2 2 0 0 1 18.4 12.6 V18.4 A2 2 0 0 1 16.4 20.4 H7.6 A2 2 0 0 1 5.6 18.4 V12.6 A2 2 0 0 1 7.6 10.6 Z M8.4 10.6 V8 A3.6 3.6 0 0 1 15.6 8 V10.6 M12 14.3 V16.7"/></symbol>
+  <symbol id="g-unlock" viewBox="0 0 24 24"><path d="M7.6 10.6 H16.4 A2 2 0 0 1 18.4 12.6 V18.4 A2 2 0 0 1 16.4 20.4 H7.6 A2 2 0 0 1 5.6 18.4 V12.6 A2 2 0 0 1 7.6 10.6 Z M8.4 10.6 V8 A3.6 3.6 0 0 1 15.4 6.8 M12 14.3 V16.7"/></symbol>
+  <symbol id="g-password" viewBox="0 0 24 24"><path d="M6.6 10.4 H17.4 A2.2 2.2 0 0 1 19.6 12.6 V18 A2.2 2.2 0 0 1 17.4 20.2 H6.6 A2.2 2.2 0 0 1 4.4 18 V12.6 A2.2 2.2 0 0 1 6.6 10.4 Z M8.2 10.4 V7.8 A3.8 3.8 0 0 1 15.8 7.8 V10.4 M8.7 15.3 h0.01 M12 15.3 h0.01 M15.3 15.3 h0.01"/></symbol>
+  <symbol id="g-gear" viewBox="0 0 24 24"><path d="M10.05 4.86 L10.35 2.54 A9.6 9.6 0 0 1 13.65 2.54 L13.95 4.86 A7.4 7.4 0 0 1 15.67 5.57 L15.67 5.57 L17.52 4.15 A9.6 9.6 0 0 1 19.85 6.48 L18.43 8.33 A7.4 7.4 0 0 1 19.14 10.05 L19.14 10.05 L21.46 10.35 A9.6 9.6 0 0 1 21.46 13.65 L19.14 13.95 A7.4 7.4 0 0 1 18.43 15.67 L18.43 15.67 L19.85 17.52 A9.6 9.6 0 0 1 17.52 19.85 L15.67 18.43 A7.4 7.4 0 0 1 13.95 19.14 L13.95 19.14 L13.65 21.46 A9.6 9.6 0 0 1 10.35 21.46 L10.05 19.14 A7.4 7.4 0 0 1 8.33 18.43 L8.33 18.43 L6.48 19.85 A9.6 9.6 0 0 1 4.15 17.52 L5.57 15.67 A7.4 7.4 0 0 1 4.86 13.95 L4.86 13.95 L2.54 13.65 A9.6 9.6 0 0 1 2.54 10.35 L4.86 10.05 A7.4 7.4 0 0 1 5.57 8.33 L5.57 8.33 L4.15 6.48 A9.6 9.6 0 0 1 6.48 4.15 L8.33 5.57 A7.4 7.4 0 0 1 10.05 4.86 Z M15 12 A3 3 0 1 1 9 12 A3 3 0 1 1 15 12 Z"/></symbol>
+  <symbol id="g-info" viewBox="0 0 24 24"><path d="M21 12 A9 9 0 1 1 3 12 A9 9 0 1 1 21 12 Z M12 11 V16.6 M12 7.9 h0.01"/></symbol>
+  <symbol id="g-compass" viewBox="0 0 24 24"><path d="M21 12 A9 9 0 1 1 3 12 A9 9 0 1 1 21 12 Z M15.6 8.4 L13.5 13.5 L8.4 15.6 L10.5 10.5 Z"/></symbol>
+  <symbol id="g-bolt" viewBox="0 0 24 24"><path d="M13.3 2.7 L5.7 13.4 H11.6 L10.7 21.3 L18.3 10.6 H12.4 Z"/></symbol>
+  <symbol id="g-chevron-right" viewBox="0 0 24 24"><path d="M9.4 5.6 L15.8 12 L9.4 18.4"/></symbol>
+  <symbol id="g-arrow-up" viewBox="0 0 24 24"><path d="M12 19.4 V4.8 M6.4 10.4 L12 4.8 L17.6 10.4"/></symbol>
+  <symbol id="g-check" viewBox="0 0 24 24"><path d="M5 12.7 L9.7 17.4 L19.1 7.3"/></symbol>
+  <symbol id="g-close" viewBox="0 0 24 24"><path d="M6.5 6.5 L17.5 17.5 M17.5 6.5 L6.5 17.5"/></symbol>
+  <symbol id="g-sun" viewBox="0 0 24 24"><path d="M15.8 12 A3.8 3.8 0 1 1 8.2 12 A3.8 3.8 0 1 1 15.8 12 Z M18.6 12 L21.1 12 M16.67 16.67 L18.43 18.43 M12 18.6 L12 21.1 M7.33 16.67 L5.57 18.43 M5.4 12 L2.9 12 M7.33 7.33 L5.57 5.57 M12 5.4 L12 2.9 M16.67 7.33 L18.43 5.57"/></symbol>
+  <symbol id="g-moon" viewBox="0 0 24 24"><path d="M19.4 14.7 A8 8 0 1 1 9.3 4.6 A6.3 6.3 0 0 0 19.4 14.7 Z"/></symbol>
+  <symbol id="g-swap" viewBox="0 0 24 24"><path d="M5 8.4 H18.6 M15.2 5 L18.6 8.4 L15.2 11.8 M19 15.6 H5.4 M8.8 12.2 L5.4 15.6 L8.8 19"/></symbol>
+  <symbol id="g-warning" viewBox="0 0 24 24"><path d="M12 3.8 L20.8 19.6 H3.2 Z M12 9.8 V14 M12 16.9 h0.01"/></symbol>
+  <symbol id="g-refresh" viewBox="0 0 24 24"><path d="M19.3 13.6 A7.4 7.4 0 1 1 17.7 7.3 L19.6 8.2 M19.6 3.6 V8.2 H15"/></symbol>
+  <symbol id="g-open-in-new" viewBox="0 0 24 24"><path d="M13.8 4.2 H19.8 V10.2 M19.8 4.2 L11.4 12.6 M17.8 13.8 V18.4 A1.6 1.6 0 0 1 16.2 20 H5.6 A1.6 1.6 0 0 1 4 18.4 V7.8 A1.6 1.6 0 0 1 5.6 6.2 H10.2"/></symbol>
+  <symbol id="g-eye" viewBox="0 0 24 24"><path d="M2.8 12 C5.2 7.7 8.4 5.6 12 5.6 C15.6 5.6 18.8 7.7 21.2 12 C18.8 16.3 15.6 18.4 12 18.4 C8.4 18.4 5.2 16.3 2.8 12 Z M15 12 A3 3 0 1 1 9 12 A3 3 0 1 1 15 12 Z"/></symbol>
+  <symbol id="g-heart" viewBox="0 0 24 24"><path d="M12 20 C8.6 17.7 3.6 14.1 3.6 9.4 A4.4 4.4 0 0 1 12 7.5 A4.4 4.4 0 0 1 20.4 9.4 C20.4 14.1 15.4 17.7 12 20 Z"/></symbol>
+  <symbol id="g-globe" viewBox="0 0 24 24"><path d="M21 12 A9 9 0 1 1 3 12 A9 9 0 1 1 21 12 Z M3 12 H21 M12 3 A13 13 0 0 0 12 21 A13 13 0 0 0 12 3"/></symbol>
+  <symbol id="g-download" viewBox="0 0 24 24"><path d="M12 4 V15 M7.4 10.6 L12 15.2 L16.6 10.6 M4.6 15.8 V18.2 A1.8 1.8 0 0 0 6.4 20 H17.6 A1.8 1.8 0 0 0 19.4 18.2 V15.8"/></symbol>
+  <symbol id="g-menu" viewBox="0 0 24 24"><path d="M4.4 7 H19.6 M4.4 12 H19.6 M4.4 17 H19.6"/></symbol>
+  <symbol id="g-copy" viewBox="0 0 24 24"><path d="M10.6 8.6 H18 A2 2 0 0 1 20 10.6 V18 A2 2 0 0 1 18 20 H10.6 A2 2 0 0 1 8.6 18 V10.6 A2 2 0 0 1 10.6 8.6 Z M15.4 8.6 V6 A2 2 0 0 0 13.4 4 H6 A2 2 0 0 0 4 6 V13.4 A2 2 0 0 0 6 15.4 H8.6"/></symbol>
+  <symbol id="g-mail" viewBox="0 0 24 24"><path d="M5.6 5.6 H18.4 A2.2 2.2 0 0 1 20.6 7.8 V16.2 A2.2 2.2 0 0 1 18.4 18.4 H5.6 A2.2 2.2 0 0 1 3.4 16.2 V7.8 A2.2 2.2 0 0 1 5.6 5.6 Z M4.2 7.4 L12 13 L19.8 7.4"/></symbol>
+  <symbol id="g-monitor" viewBox="0 0 24 24"><path d="M4.6 4.4 H19.4 A1.6 1.6 0 0 1 21 6 V15 A1.6 1.6 0 0 1 19.4 16.6 H4.6 A1.6 1.6 0 0 1 3 15 V6 A1.6 1.6 0 0 1 4.6 4.4 Z M12 16.6 V19.8 M8.2 19.8 H15.8"/></symbol>
+  <symbol id="g-phone" viewBox="0 0 24 24"><path d="M8.4 2.8 H15.6 A1.8 1.8 0 0 1 17.4 4.6 V19.4 A1.8 1.8 0 0 1 15.6 21.2 H8.4 A1.8 1.8 0 0 1 6.6 19.4 V4.6 A1.8 1.8 0 0 1 8.4 2.8 Z M10.8 18.2 H13.2"/></symbol>
+  <symbol id="g-network" viewBox="0 0 24 24"><path d="M14.2 5 A2.2 2.2 0 1 1 9.8 5 A2.2 2.2 0 1 1 14.2 5 Z M7.7 17.6 A2.2 2.2 0 1 1 3.3 17.6 A2.2 2.2 0 1 1 7.7 17.6 Z M20.7 17.6 A2.2 2.2 0 1 1 16.3 17.6 A2.2 2.2 0 1 1 20.7 17.6 Z M10.7 7.5 L6.8 15.1 M13.3 7.5 L17.2 15.1 M8.3 17.6 H15.7"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+<canvas class="sky sky-base" aria-hidden="true"></canvas>
+<canvas class="sky sky-stars" aria-hidden="true"></canvas>
+<div class="scroll-progress" aria-hidden="true"></div>
+
+<header class="topbar" data-topbar>
+  <nav class="nav container" aria-label="Main">
+    <a class="brand" href="#home">
+      <svg class="glyph brand-mark" aria-hidden="true"><use href="#g-shield-lock"/></svg>
+      <span class="brand-name">Crypten</span>
+    </a>
+    <button class="icon-button nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open the menu" data-nav-toggle>
+      <svg class="glyph icon-open" aria-hidden="true"><use href="#g-menu"/></svg>
+      <svg class="glyph icon-shut" aria-hidden="true"><use href="#g-close"/></svg>
+    </button>
+    <div class="nav-menu" id="nav-menu" data-nav-menu>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#security">Security</a></li>
+        <li><a href="#free">Free forever</a></li>
+        <li><a href="#donate">Donate</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#obi">Who is Obi Tirips?</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="icon-button theme-toggle" type="button" aria-label="Switch to the light theme" data-theme-toggle>
+          <svg class="glyph icon-sun" aria-hidden="true"><use href="#g-sun"/></svg>
+          <svg class="glyph icon-moon" aria-hidden="true"><use href="#g-moon"/></svg>
+        </button>
+        <a class="button button-primary" href="#download">
+          <svg class="glyph" aria-hidden="true"><use href="#g-download"/></svg>Download
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- ==== Home ================================================================================================ -->
+  <section class="hero" id="home" aria-labelledby="hero-title">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="pill tone-workspace" data-enter>
+          <svg class="glyph" aria-hidden="true"><use href="#g-shield-check"/></svg>
+          Free forever · No account · Nothing leaves your computer
+        </p>
+        <h1 class="hero-title" id="hero-title" data-enter>Encrypt everything.<br><span class="hero-accent">Lose nothing.</span></h1>
+        <p class="hero-lead" data-enter>Crypten encrypts your files, folders and whole workspaces with AES-256-GCM, checks every result with SHA3-512 before it keeps it, and never overwrites a thing — not even when the power fails halfway.</p>
+        <div class="hero-actions" data-enter>
+          <a class="button button-primary button-large" href="#download">
+            <svg class="glyph" aria-hidden="true"><use href="#g-download"/></svg>Download Crypten
+          </a>
+          <a class="button button-ghost button-large" href="#security">
+            How it keeps files safe<svg class="glyph" aria-hidden="true"><use href="#g-chevron-right"/></svg>
+          </a>
+        </div>
+        <ul class="trust-strip tone-workspace" aria-label="What every result gets" data-enter>
+          <li><svg class="glyph" aria-hidden="true"><use href="#g-shield-check"/></svg>AES-256-GCM</li>
+          <li>SHA3-512</li>
+          <li>Verified</li>
+          <li>Crash-safe</li>
+          <li>Free forever</li>
+        </ul>
+      </div>
+
+      <div class="emblem tone-brand" aria-hidden="true" data-enter>
+        <svg class="emblem-art" viewBox="0 0 240 240">
+          <defs>
+            <radialGradient id="emblem-core">
+              <stop offset="0" stop-color="currentColor" stop-opacity="0.30"/>
+              <stop offset="0.55" stop-color="currentColor" stop-opacity="0.12"/>
+              <stop offset="1" stop-color="currentColor" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle cx="120" cy="120" r="84" fill="url(#emblem-core)"/>
+          <circle class="emblem-ring" cx="120" cy="120" r="84"/>
+          <g class="emblem-orbit">
+            <circle class="emblem-path" cx="120" cy="120" r="106"/>
+            <circle class="emblem-satellite" cx="120" cy="14" r="5"/>
+          </g>
+          <svg class="emblem-shield" x="62" y="60" width="116" height="116" viewBox="0 0 24 24"><use href="#g-shield-lock"/></svg>
+        </svg>
+      </div>
+    </div>
+
+    <figure class="showcase container">
+      <div class="showcase-stage">
+        <div class="showcase-frame" data-tilt>
+          <div class="showcase-screen">
+            <picture>
+              <source srcset="img/home-light.webp" width="2000" height="1281" media="(prefers-color-scheme: light)" data-light-shot>
+              <img class="showcase-shot" src="img/home-dark.webp" width="2000" height="1299" fetchpriority="high" decoding="async"
+                   alt="Crypten's home screen: the menu on the left — Home, Workspace, Files, Folders, Decrypt, Keys, Settings, About and Donate — then Welcome to Crypten with the Guide me step by step button, four Quick Actions (Open Workspace, Encrypt File, Encrypt Folder, Decrypt / Verify) and the cards Encryption Key, Password and Encrypted Workspace.">
+            </picture>
+            <span class="hotspot hotspot-1" aria-hidden="true" data-spot="1">1</span>
+            <span class="hotspot hotspot-2" aria-hidden="true" data-spot="2">2</span>
+            <span class="hotspot hotspot-3" aria-hidden="true" data-spot="3">3</span>
+            <span class="hotspot hotspot-4" aria-hidden="true" data-spot="4">4</span>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <p class="showcase-caption">The home screen of Crypten <span data-version>0.0.1</span>, in the theme you are using now.</p>
+        <ol class="tour">
+          <li data-spot="1"><span class="tour-number" aria-hidden="true">1</span><span><strong>The menu</strong> leads everywhere: workspaces, files, folders, decryption, keys, settings — and it folds to icons in a narrow window.</span></li>
+          <li data-spot="2"><span class="tour-number" aria-hidden="true">2</span><span><strong>Guide me step by step</strong> asks what you want to do, then leads you through it.</span></li>
+          <li data-spot="3"><span class="tour-number" aria-hidden="true">3</span><span><strong>Quick Actions</strong>: the four everyday tasks, each in the colour of its kind.</span></li>
+          <li data-spot="4"><span class="tour-number" aria-hidden="true">4</span><span><strong>Your key</strong> at a glance: which one is unlocked, by its name. One click locks it.</span></li>
+        </ol>
+      </figcaption>
+    </figure>
+  </section>
+
+  <!-- ==== What it is for ===================================================================================== -->
+  <section class="section" id="about" aria-labelledby="about-title">
+    <div class="container">
+      <header class="section-head" data-reveal>
+        <p class="eyebrow tone-brand"><svg class="glyph" aria-hidden="true"><use href="#g-eye"/></svg>What it is for</p>
+        <h2 id="about-title">For everything that is nobody else's business</h2>
+        <p class="section-lead">Tax papers, contracts, medical records, photos, the backup on your USB stick. Crypten turns them into files that only your key opens — on your own computer, with no account, no cloud and no one looking over your shoulder.</p>
+      </header>
+      <div class="cards cards-3">
+        <article class="card tone-encryption" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-file-lock"/></svg></span>
+          <h3>Lock away a file or a folder</h3>
+          <p>Choose it, choose your key, and Crypten does the rest. It works on a copy, and keeps the result only once it has decrypted it again and found it identical.</p>
+        </article>
+        <article class="card tone-workspace" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-layers"/></svg></span>
+          <h3>Work in an encrypted workspace</h3>
+          <p>A folder that stays encrypted on your disk. Open it, use its files with your usual programs, close it — and it is sealed again, with the version before kept.</p>
+        </article>
+        <article class="card tone-key" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-key"/></svg></span>
+          <h3>Share a file safely</h3>
+          <p>Make a key just for that file. Send the file one way and its key file another, and tell the password only in person.</p>
+        </article>
+      </div>
+      <aside class="card tone-brand independent" aria-labelledby="independent-title" data-reveal>
+        <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-shield-check"/></svg></span>
+        <h3 id="independent-title">Independent, and the only Crypten</h3>
+        <p>Crypten is independent, non-commercial software. Apps and products with a similar name or similar features are not Crypten and have nothing to do with it: the only Crypten is the one you download here.</p>
+        <p>Nearly every good name already belongs to a company or a program somewhere. We chose Crypten because we liked it — never to take a name, or a reputation, that belongs to anyone else.</p>
+        <p>Crypten's code and pictures were made for Crypten, from scratch: none of it was copied from anywhere. The open-source building blocks it stands on, such as Java, JavaFX and Bouncy Castle, are used as their licences allow.</p>
+        <p>Crypten is not a trademark. It is simply the name of a free program, given to everyone.</p>
+        <p class="independent-close">And if the name still bothers you, take a deep breath: a name takes nothing away from anyone. The best answer to any software is better software.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ==== Features ============================================================================================ -->
+  <section class="section" id="features" aria-labelledby="features-title">
+    <div class="container">
+      <header class="section-head" data-reveal>
+        <p class="eyebrow tone-encryption"><svg class="glyph" aria-hidden="true"><use href="#g-bolt"/></svg>Features</p>
+        <h2 id="features-title">Strong encryption, made simple</h2>
+        <p class="section-lead">Every task is a few clear steps, and every result is checked before it is kept. Nothing is left to chance — or to your memory.</p>
+      </header>
+      <div class="cards cards-4">
+        <article class="card tone-encryption" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-file-lock"/></svg></span>
+          <h3>Encrypt files</h3>
+          <p>Any file becomes <code>name.crypten</code>, with SHA3-512 hashes of the original and of the encrypted file saved beside it. Keeping the original is your choice.</p>
+        </article>
+        <article class="card tone-encryption" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-folder-lock"/></svg></span>
+          <h3>Encrypt folders</h3>
+          <p>A whole folder is compressed into one encrypted file — then decrypted again, and every file compared with its original.</p>
+        </article>
+        <article class="card tone-workspace" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-layers"/></svg></span>
+          <h3>Encrypted workspaces</h3>
+          <p>Open one, work on its files with your usual programs, save or close it. Every change is a new version, and the versions before are kept until you delete them.</p>
+        </article>
+        <article class="card tone-decryption" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-doc-check"/></svg></span>
+          <h3>Decrypt or verify</h3>
+          <p>Get a file or a folder back under a free name — nothing is overwritten — or only check that an encrypted file is intact.</p>
+        </article>
+        <article class="card tone-key" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-key"/></svg></span>
+          <h3>Keys that are yours</h3>
+          <p>256-bit keys, made on your computer, each saved in a key file locked with your password. Name them your way and keep a copy on a USB stick.</p>
+        </article>
+        <article class="card tone-password" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-password"/></svg></span>
+          <h3>Passwords you can change</h3>
+          <p>A new password re-encrypts the key file. The key itself stays the same, so everything it encrypted stays readable.</p>
+        </article>
+        <article class="card tone-brand" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-compass"/></svg></span>
+          <h3>Guided, step by step</h3>
+          <p>Every task is a short wizard whose Next waits until the step is right. Not sure where to start? <em>Guide me step by step</em> asks what you want to do.</p>
+        </article>
+        <article class="card tone-brand" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-globe"/></svg></span>
+          <h3>Windows and Linux</h3>
+          <p>One app and one set of formats: a folder encrypted on one system opens on the other. Light and dark themes follow your system.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==== Security ============================================================================================ -->
+  <section class="section" id="security" aria-labelledby="security-title">
+    <div class="container">
+      <header class="section-head" data-reveal>
+        <p class="eyebrow tone-workspace"><svg class="glyph" aria-hidden="true"><use href="#g-shield-check"/></svg>Security</p>
+        <h2 id="security-title">Built so that nothing gets lost</h2>
+        <p class="section-lead">Strong encryption is only half the job. The other half is never harming what you encrypt: Crypten never works on your original, checks every result before it keeps it, and comes through a crash at any moment.</p>
+      </header>
+
+      <div class="pipeline" data-reveal>
+        <div class="pipeline-track" aria-hidden="true"><span class="pipeline-pulse"></span></div>
+        <ol class="pipeline-steps" aria-label="What happens to every file Crypten encrypts">
+          <li class="step tone-decryption">
+            <span class="step-icon"><svg class="glyph" aria-hidden="true"><use href="#g-file"/></svg></span>
+            <h3><span class="step-number">1</span>Copy</h3>
+            <p>Your original is copied into a hidden work folder. It is never worked on.</p>
+          </li>
+          <li class="step tone-encryption">
+            <span class="step-icon"><svg class="glyph" aria-hidden="true"><use href="#g-padlock"/></svg></span>
+            <h3><span class="step-number">2</span>Encrypt</h3>
+            <p>AES-256-GCM, in authenticated 1 MiB segments, with a fresh subkey for every file.</p>
+          </li>
+          <li class="step tone-key">
+            <span class="step-icon"><svg class="glyph" aria-hidden="true"><use href="#g-unlock"/></svg></span>
+            <h3><span class="step-number">3</span>Decrypt again</h3>
+            <p>The result is decrypted once more, straight away.</p>
+          </li>
+          <li class="step tone-workspace">
+            <span class="step-icon"><svg class="glyph" aria-hidden="true"><use href="#g-shield-check"/></svg></span>
+            <h3><span class="step-number">4</span>Compare</h3>
+            <p>Its content must match the original's SHA3-512 hash — for a folder, file by file.</p>
+          </li>
+          <li class="step tone-brand">
+            <span class="step-icon"><svg class="glyph" aria-hidden="true"><use href="#g-check"/></svg></span>
+            <h3><span class="step-number">5</span>Keep</h3>
+            <p>Only then is it renamed into place. Nothing is ever overwritten.</p>
+          </li>
+        </ol>
+      </div>
+
+      <div class="cards cards-2">
+        <article class="card tone-encryption" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-bolt"/></svg></span>
+          <h3>Crash-safe at every step</h3>
+          <p>A power cut, a blue screen or a killed process at any moment leaves either the state before the operation or the state after it — never a half-written file under a real name, never a lost original. Interrupted work is finished or rolled back the next time Crypten starts, and every step of every operation is tested with a simulated crash.</p>
+        </article>
+        <article class="card tone-password" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-refresh"/></svg></span>
+          <h3>Ready for tomorrow's cryptography</h3>
+          <p>Every key is made for one cryptography version, recorded in its key file and in every file it encrypts — today AES-256-GCM, CV1. A stronger algorithm can arrive as CV2 without touching anything you have already encrypted.</p>
+        </article>
+      </div>
+
+      <div class="spec" data-reveal>
+        <div class="spec-head">
+          <svg class="glyph" aria-hidden="true"><use href="#g-gear"/></svg>
+          <h3>Under the hood</h3>
+        </div>
+        <dl class="spec-list">
+          <div><dt>Cipher</dt><dd>AES-256-GCM, cryptography version CV1 (Bouncy Castle)</dd></div>
+          <div><dt>Segments</dt><dd>Authenticated, 1 MiB each</dd></div>
+          <div><dt>Subkeys</dt><dd>HKDF-SHA-512, fresh for every file</dd></div>
+          <div><dt>Keys</dt><dd>256 bits, made on your computer</dd></div>
+          <div><dt>Key files</dt><dd>Locked with your password through Argon2id</dd></div>
+          <div><dt>Hashes</dt><dd>SHA3-512 of the original and of the encrypted file</dd></div>
+          <div><dt>Writing</dt><dd>Working copy → verify → rename. Never overwrite.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==== Privacy ============================================================================================= -->
+  <section class="section" id="privacy" aria-labelledby="privacy-title" data-nav="security">
+    <div class="container">
+      <header class="section-head" data-reveal>
+        <p class="eyebrow tone-password"><svg class="glyph" aria-hidden="true"><use href="#g-password"/></svg>Privacy</p>
+        <h2 id="privacy-title">Your files. Your keys. Nobody else's.</h2>
+        <p class="section-lead">Crypten is made so that no one has to be trusted with what is yours — not even us.</p>
+      </header>
+      <ul class="cards cards-4 promises">
+        <li class="card tone-workspace" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-globe"/></svg></span>
+          <h3>Nothing leaves your computer</h3>
+          <p>No cloud and no servers: Crypten works where your files are, and sends nothing anywhere.</p>
+        </li>
+        <li class="card tone-key" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-key"/></svg></span>
+          <h3>Only you hold the key</h3>
+          <p>Your key is made on your computer and locked with your password. We never see it — and we can't.</p>
+        </li>
+        <li class="card tone-brand" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-info"/></svg></span>
+          <h3>No account</h3>
+          <p>Nothing to sign up for and nothing to log in to. Download it, start it, use it.</p>
+        </li>
+        <li class="card tone-password" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-eye"/></svg></span>
+          <h3>No tracking</h3>
+          <p>No ads, no analytics, no telemetry — in the app and on this website alike.</p>
+        </li>
+      </ul>
+
+      <aside class="warning tone-danger" aria-labelledby="warning-title" data-reveal>
+        <div class="warning-head">
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-warning"/></svg></span>
+          <h3 id="warning-title">We will never ask for your password, your keys or your data</h3>
+        </div>
+        <p class="warning-lead">No one from Crypten — not our developers, not our “company” (we are not classified and operated as a company), truly no one — will ever ask you for your password, your key files or any of your data. Not by email, not in a message, not on the phone, not for any reason.</p>
+        <ul class="warning-points">
+          <li><strong>Beware of fake emails.</strong> Scammers may copy our name and our look. Write only to our official address, <a href="mailto:obi.tirips@gmail.com">obi.tirips@gmail.com</a>, and always check who a message really comes from before you answer it, open its links or download what it sends.</li>
+          <li><strong>Lost means lost.</strong> If you forget your password or lose your key file, we cannot recover them — and neither can anyone else. That is not a flaw: strong encryption is built so that it can never be broken or reversed.</li>
+          <li><strong>Distrust every “recovery” offer.</strong> Whoever offers to recover your password or to decrypt your files without the key is promising what strong encryption is made to prevent. Think a hundred times before you send your keys or files to anyone.</li>
+        </ul>
+        <p class="warning-again">Once more: we will never ask for your password, your keys or your data.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ==== Free forever ======================================================================================== -->
+  <section class="section" id="free" aria-labelledby="free-title">
+    <div class="container free-grid">
+      <div class="free-copy">
+        <header class="section-head section-head-start" data-reveal>
+          <p class="eyebrow tone-workspace"><svg class="glyph" aria-hidden="true"><use href="#g-globe"/></svg>Free forever</p>
+          <h2 id="free-title">Free. For everyone. Forever.</h2>
+        </header>
+        <blockquote class="statement" data-reveal>
+          <p>Technology, information, privacy and security belong to everyone.</p>
+        </blockquote>
+        <p class="free-text" data-reveal>That is why we made Crypten free — and why it will stay free, for everyone, forever.</p>
+        <p class="free-text muted" data-reveal>Our civilization has reached an age of abundance: technology and resources have never been more plentiful. Yet governments, central banks and organizations still control who may reach them — and, through censorship, even what information we may see. We do not support any of it.</p>
+      </div>
+      <div class="price tone-brand" data-reveal>
+        <div class="price-inner">
+          <p class="price-tag"><span class="price-currency">$</span>0</p>
+          <p class="price-note">Today, tomorrow, forever.</p>
+          <ul class="price-list">
+            <li><svg class="glyph" aria-hidden="true"><use href="#g-check"/></svg>Free to use, for everyone</li>
+            <li><svg class="glyph" aria-hidden="true"><use href="#g-check"/></svg>No account, no subscription</li>
+            <li><svg class="glyph" aria-hidden="true"><use href="#g-check"/></svg>No ads, no tracking</li>
+            <li><svg class="glyph" aria-hidden="true"><use href="#g-check"/></svg>Donations welcome, never required</li>
+          </ul>
+          <a class="button button-primary button-block" href="#download">
+            <svg class="glyph" aria-hidden="true"><use href="#g-download"/></svg>Download Crypten
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <h3 class="group-title" data-reveal>What we stand for</h3>
+      <div class="cards cards-4">
+        <article class="card tone-workspace" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-globe"/></svg></span>
+          <h3>Technology for everyone</h3>
+          <p>The best tools should not depend on what you can pay. Crypten is free for anyone, anywhere in the world.</p>
+        </article>
+        <article class="card tone-key" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-info"/></svg></span>
+          <h3>Information without censorship</h3>
+          <p>Knowledge belongs to all of us. Nobody should decide for you what you may read, write or keep.</p>
+        </article>
+        <article class="card tone-password" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-padlock"/></svg></span>
+          <h3>Privacy, by right</h3>
+          <p>What is yours stays yours. Your files are encrypted with your key, and only you hold it — not us, not anyone.</p>
+        </article>
+        <article class="card tone-encryption" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-shield-check"/></svg></span>
+          <h3>Security for all</h3>
+          <p>Strong encryption should protect everyone, not only those who can afford it.</p>
+        </article>
+      </div>
+      <p class="pledge" data-reveal>We side with freedom.</p>
+    </div>
+  </section>
+
+  <!-- ==== Download ============================================================================================ -->
+  <section class="section" id="download" aria-labelledby="download-title">
+    <div class="container">
+      <header class="section-head" data-reveal>
+        <p class="eyebrow tone-brand"><svg class="glyph" aria-hidden="true"><use href="#g-download"/></svg>Download</p>
+        <h2 id="download-title">Get Crypten</h2>
+        <p class="section-lead">Version <span data-version>0.0.1</span> for Windows and Linux. No account and no sign-up: download it and start.</p>
+      </header>
+
+      <div class="download" data-reveal>
+        <div class="release">
+          <img class="release-icon" src="img/logo-256.webp" width="88" height="88" alt="" loading="lazy" decoding="async">
+          <div>
+            <p class="release-name">Crypten <span data-version>0.0.1</span></p>
+            <p class="release-meta">Free · Windows and Linux · Android in development</p>
+          </div>
+        </div>
+
+        <div class="tabs" data-tabs="os">
+          <div class="tablist os-list" role="tablist" aria-label="Your system">
+            <button class="tab" type="button" role="tab" id="tab-windows" aria-controls="os-windows" aria-selected="true">Windows</button>
+            <button class="tab" type="button" role="tab" id="tab-android" aria-controls="os-android" aria-selected="false" tabindex="-1">Android</button>
+            <button class="tab" type="button" role="tab" id="tab-linux" aria-controls="os-linux" aria-selected="false" tabindex="-1">Linux</button>
+          </div>
+
+          <div class="tabpanel" role="tabpanel" id="os-windows" aria-labelledby="tab-windows" tabindex="0">
+            <h3 class="panel-title">Windows</h3>
+            <div class="runners">
+              <article class="runner runner-featured tone-brand">
+                <p class="runner-badge">Recommended</p>
+                <h4>Installer</h4>
+                <p>Installs Crypten with its own Java into Program Files, with a Start-menu entry and a desktop shortcut if you like. Uninstall it from Windows' settings.</p>
+                <p class="runner-needs"><svg class="glyph" aria-hidden="true"><use href="#g-check"/></svg>Needs nothing else</p>
+                <a class="button button-primary button-block" href="https://github.com/obi-tirips/crypten/releases/download/v0.0.1/crypten_v0.0.1_embeddedJRE27.exe">
+                  <svg class="glyph" aria-hidden="true"><use href="#g-download"/></svg>Download installer
+                </a>
+                <p class="runner-file">crypten_v0.0.1_embeddedJRE27.exe</p>
+                <details class="runner-proof">
+                  <summary>Signature and SHA3-512</summary>
+                  <div class="runner-proof-body">
+                    <p class="runner-proof-label">SHA3-512</p>
+                    <code class="hash hash-groups" id="sha3-installer" data-sha3>0b0b9692 0a3cda29 220608c4 3e0a2d9c 6583026d ed52c38a 8e2dd75c aabe8a14 0e832aff 0b845eee 89d0e0b9 971f5b20 28aa0fb3 748186c7 6de0b053 c37ec7aa</code>
+                    <button class="button button-secondary copy" type="button" data-copy="#sha3-installer" data-copy-joined data-copied="The installer's SHA3-512 is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy SHA3-512</span></button>
+                    <p class="runner-proof-label">Signature</p>
+                    <code class="hash runner-signature" id="signature-installer" data-signature>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</code>
+                    <button class="button button-secondary copy" type="button" data-copy="#signature-installer" data-copied="The installer's signature is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy signature</span></button>
+                  </div>
+                </details>
+              </article>
+              <article class="runner tone-workspace">
+                <h4>Portable</h4>
+                <p>Unzip it anywhere and run <code>Crypten.exe</code>. Nothing is installed, and it carries its own Java.</p>
+                <p class="runner-needs"><svg class="glyph" aria-hidden="true"><use href="#g-check"/></svg>Needs nothing else</p>
+                <a class="button button-secondary button-block" href="https://github.com/obi-tirips/crypten/releases/download/v0.0.1/crypten_v0.0.1_embeddedJRE27.zip">
+                  <svg class="glyph" aria-hidden="true"><use href="#g-download"/></svg>Download .zip
+                </a>
+                <p class="runner-file">crypten_v0.0.1_embeddedJRE27.zip</p>
+                <details class="runner-proof">
+                  <summary>Signature and SHA3-512</summary>
+                  <div class="runner-proof-body">
+                    <p class="runner-proof-label">SHA3-512</p>
+                    <code class="hash hash-groups" id="sha3-portable" data-sha3>c5c20571 57bfee90 9feac7b4 242f2510 a37c3b27 1a0d35d4 8aff1bcf fbb71c68 863ef8da 8288df68 6819e427 0a494780 e1c341fe 56b112f6 3027dd78 4d035e13</code>
+                    <button class="button button-secondary copy" type="button" data-copy="#sha3-portable" data-copy-joined data-copied="The .zip's SHA3-512 is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy SHA3-512</span></button>
+                    <p class="runner-proof-label">Signature</p>
+                    <code class="hash runner-signature" id="signature-portable" data-signature>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</code>
+                    <button class="button button-secondary copy" type="button" data-copy="#signature-portable" data-copied="The .zip's signature is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy signature</span></button>
+                  </div>
+                </details>
+              </article>
+              <article class="runner tone-key">
+                <h4>Launcher</h4>
+                <p>A small download that runs on the Java on your computer. Finding none, it says so and opens adoptium.net.</p>
+                <p class="runner-needs"><svg class="glyph" aria-hidden="true"><use href="#g-info"/></svg>Needs Java 25 or newer</p>
+                <a class="button button-secondary button-block" href="https://github.com/obi-tirips/crypten/releases/download/v0.0.1/crypten_v0.0.1.exe">
+                  <svg class="glyph" aria-hidden="true"><use href="#g-download"/></svg>Download .exe
+                </a>
+                <p class="runner-file">crypten_v0.0.1.exe</p>
+                <details class="runner-proof">
+                  <summary>Signature and SHA3-512</summary>
+                  <div class="runner-proof-body">
+                    <p class="runner-proof-label">SHA3-512</p>
+                    <code class="hash hash-groups" id="sha3-launcher" data-sha3>e95545cb 3c7ff3be 3f3ef6b6 8753bca2 496926c8 7a614b6a 846ef697 9a33a40b 2661edbc 9f001952 9d75418c 665943ba 75d9c7dd ef9c9771 91ee1aa8 9afe7c4c</code>
+                    <button class="button button-secondary copy" type="button" data-copy="#sha3-launcher" data-copy-joined data-copied="The .exe's SHA3-512 is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy SHA3-512</span></button>
+                    <p class="runner-proof-label">Signature</p>
+                    <code class="hash runner-signature" id="signature-launcher" data-signature>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</code>
+                    <button class="button button-secondary copy" type="button" data-copy="#signature-launcher" data-copied="The .exe's signature is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy signature</span></button>
+                  </div>
+                </details>
+              </article>
+              <article class="runner tone-decryption">
+                <h4>Jar</h4>
+                <p>Crypten in one file. Double-click it, or run <code>java -jar crypten_v0.0.1.jar</code>.</p>
+                <p class="runner-needs"><svg class="glyph" aria-hidden="true"><use href="#g-info"/></svg>Needs Java 25 or newer</p>
+                <a class="button button-secondary button-block" href="https://github.com/obi-tirips/crypten/releases/download/v0.0.1/crypten_v0.0.1.jar">
+                  <svg class="glyph" aria-hidden="true"><use href="#g-download"/></svg>Download .jar
+                </a>
+                <p class="runner-file">crypten_v0.0.1.jar</p>
+                <details class="runner-proof">
+                  <summary>Signature and SHA3-512</summary>
+                  <div class="runner-proof-body">
+                    <p class="runner-proof-label">SHA3-512</p>
+                    <code class="hash hash-groups" id="sha3-jar" data-sha3>6738c096 ae72df83 13c1e99a 13287dce 78e7c509 686424c7 3a4396ca da5b3793 7ec1059f e4f4aeca e5e1bc6f 7a888462 f06e08ab cf943043 9de66ce8 5f5ae0d4</code>
+                    <button class="button button-secondary copy" type="button" data-copy="#sha3-jar" data-copy-joined data-copied="The .jar's SHA3-512 is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy SHA3-512</span></button>
+                    <p class="runner-proof-label">Signature</p>
+                    <code class="hash runner-signature" id="signature-jar" data-signature>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</code>
+                    <button class="button button-secondary copy" type="button" data-copy="#signature-jar" data-copied="The .jar's signature is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy signature</span></button>
+                  </div>
+                </details>
+              </article>
+            </div>
+          </div>
+
+          <div class="tabpanel" role="tabpanel" id="os-android" aria-labelledby="tab-android" tabindex="0">
+            <h3 class="panel-title">Android</h3>
+            <div class="soon tone-workspace">
+              <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-refresh"/></svg></span>
+              <div>
+                <h4>On its way</h4>
+                <p>The Android app is in development. It already wears Crypten's look, and it will read and write the very same files as the desktop app.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tabpanel" role="tabpanel" id="os-linux" aria-labelledby="tab-linux" tabindex="0">
+            <h3 class="panel-title">Linux</h3>
+            <div class="runners runners-single">
+              <article class="runner runner-featured tone-brand">
+                <h4>Jar for Linux</h4>
+                <p>Crypten in one file, with JavaFX for Linux (x64). Run <code>java -jar crypten_v0.0.1_linux.jar</code>, or open it from your desktop.</p>
+                <p class="runner-needs"><svg class="glyph" aria-hidden="true"><use href="#g-info"/></svg>Needs Java 25 or newer, free from <a class="external" href="https://adoptium.net/" rel="noopener noreferrer" target="_blank">adoptium.net<svg class="glyph" aria-hidden="true"><use href="#g-open-in-new"/></svg></a></p>
+                <a class="button button-primary button-block" href="https://github.com/obi-tirips/crypten/releases/download/v0.0.1/crypten_v0.0.1_linux.jar">
+                  <svg class="glyph" aria-hidden="true"><use href="#g-download"/></svg>Download for Linux
+                </a>
+                <p class="runner-file">crypten_v0.0.1_linux.jar</p>
+                <details class="runner-proof">
+                  <summary>Signature and SHA3-512</summary>
+                  <div class="runner-proof-body">
+                    <p class="runner-proof-label">SHA3-512</p>
+                    <code class="hash hash-groups" id="sha3-linux" data-sha3>4a9e5cee 8f636eec d827738a 89c80257 daba209e 96a256e6 8917fe3b a4573555 fa0c01a5 c07be995 4079299f 8683d6fc 230d4197 77ad97b0 aae5e3ed cabc7121</code>
+                    <button class="button button-secondary copy" type="button" data-copy="#sha3-linux" data-copy-joined data-copied="The Linux jar's SHA3-512 is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy SHA3-512</span></button>
+                    <p class="runner-proof-label">Signature</p>
+                    <code class="hash runner-signature" id="signature-linux" data-signature>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</code>
+                    <button class="button button-secondary copy" type="button" data-copy="#signature-linux" data-copied="The Linux jar's signature is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy signature</span></button>
+                  </div>
+                </details>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards cards-2 download-notes">
+        <aside class="card tone-encryption" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-key"/></svg></span>
+          <h3>Before your first start</h3>
+          <p>Crypten says it at every start, and we say it here: nothing can be recovered without <strong>both</strong> the key file and its password. Keep a copy of your key file somewhere safe — a USB stick will do — and never forget its password.</p>
+        </aside>
+        <aside class="card tone-workspace" data-reveal>
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-shield-check"/></svg></span>
+          <h3>Check your download</h3>
+          <p>Every file here is signed with Crypten's own ML-DSA-87 key, and its signature and its SHA3-512 hash are shown beside it (open <em>Signature and SHA3-512</em> under its download). With Crypten already on your computer, open <strong>About → Signatures → Check a download</strong>, choose the file and paste its signature. The first time, compare the key fingerprint About shows with this one (<a href="crypten-signing-public-key.txt" download>the public key</a> is here too):</p>
+          <code class="hash hash-groups" data-key-fingerprint>f94b4e9b 92a88a5b cbe98be9 71c2065e 953d0828 95183af2 031d74df 5cc468b9 7b0058aa 8c0a6e6c 88f2d1f8 0304ba31 dd6d8ac8 f465b310 d34d8f9f 04a35b1a</code>
+          <p>Then check the file's SHA3-512 with a second tool as well, one that is not Crypten: a copy of Crypten that was tampered with could call any file genuine. Free tools that compute it, <code>&lt;file&gt;</code> being the file you downloaded:</p>
+          <ul class="commands">
+            <li><span>Windows 11</span><code>certutil -hashfile &lt;file&gt; SHA3-512</code></li>
+            <li><span>Linux</span><code>openssl dgst -sha3-512 &lt;file&gt;</code></li>
+            <li><span>Python 3</span><code>python3 -c "import hashlib,sys; print(hashlib.sha3_512(open(sys.argv[1],'rb').read()).hexdigest())" &lt;file&gt;</code></li>
+            <li><span>Git Bash</span><code>openssl dgst -sha3-512 &lt;file&gt;</code></li>
+          </ul>
+          <p class="commands-note">certutil is built into Windows 11 24H2 and newer. Python 3 works on every system (type <code>py</code> instead of <code>python3</code> on Windows), and Git Bash, from Git for Windows, on any Windows.</p>
+        </aside>
+      </div>
+
+      <aside class="card tone-encryption download-update" aria-labelledby="update-title" data-reveal>
+        <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-warning"/></svg></span>
+        <h3 id="update-title">Before you update, keep the version you have</h3>
+        <p>Every new version of Crypten is made to open what earlier versions encrypted — but keep the version you use now until you are sure. Install the new one, check that it verifies and decrypts your existing encrypted files and workspaces, and only then remove the old one.</p>
+        <p>Earlier versions are, in most cases, still in the download history of <a class="external" href="https://github.com/obi-tirips/crypten/releases" rel="noopener noreferrer" target="_blank">Crypten's releases on GitHub<svg class="glyph" aria-hidden="true"><use href="#g-open-in-new"/></svg></a> — but your own copy of the runner you use now is the safer one. On Android, Google Play installs updates on its own: to keep your version until you have checked a new one, open Crypten in Google Play, tap the three-dot menu and untick <em>Enable auto update</em>. The desktop app reads the very same files.</p>
+      </aside>
+
+      <aside class="card tone-workspace download-recovery" aria-labelledby="recovery-title" data-reveal>
+        <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-refresh"/></svg></span>
+        <h3 id="recovery-title">If a new version cannot open your data</h3>
+        <p>Every new version of Crypten is made to open what earlier versions encrypted. If one ever cannot — it says a key, a file, a folder or a workspace needs another version, or will not open it — nothing is lost: your data is still encrypted and intact. Get it out with the version that made it, then encrypt it again with the new one.</p>
+        <ol class="recovery-steps">
+          <li>Get the older version — the one you used last. Your own copy is the safest; earlier versions are, in most cases, in the download history of Crypten's releases on GitHub (github.com/obi-tirips/crypten/releases).</li>
+          <li>In the older version, decrypt the files and folders you need, and export decrypted copies of your workspaces (Export decrypted copy, on each workspace or any of its versions).</li>
+          <li>Save that decrypted data in a place only you can reach. It is not encrypted while it waits there, so keep that time short.</li>
+          <li>Open the newer version and encrypt the data again — with the same key if the newer version accepts it, otherwise with a new key you create in it (and keep that key file and its password safe, as always).</li>
+          <li>Check that the new encrypted copies verify and decrypt, then delete the decrypted data.</li>
+        </ol>
+        <p>Which version made it: a key file names the app and version that created it in its Created-By line, and a workspace in its crypten-workspace.properties (createdBy, and sealedBy for its last save).</p>
+        <p>Google Play offers only its newest version, so an older Android app cannot be installed from it again. If it has already updated: back up the workspace (Back up), export its key file (Key &amp; Security, Export), copy them and your encrypted files to a computer, and follow these steps there with the desktop app of the version that made them — it reads the Android app's keys, files and workspaces.</p>
+        <p>Both apps show these steps under Recovery: the desktop app in its side menu, the Android app in Settings and About.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ==== Donate ============================================================================================== -->
+  <section class="section" id="donate" aria-labelledby="donate-title">
+    <div class="container">
+      <header class="section-head" data-reveal>
+        <p class="eyebrow tone-brand"><svg class="glyph" aria-hidden="true"><use href="#g-heart"/></svg>Donate</p>
+        <h2 id="donate-title">Support Crypten</h2>
+        <p class="section-lead">Crypten is free to use. A donation, in any of these seven cryptocurrencies, keeps its development going.</p>
+      </header>
+
+      <div class="donate">
+        <div class="donate-why" data-reveal>
+          <div class="donate-why-main">
+          <div class="thanks">
+            <img src="img/donate-192.webp" width="96" height="96" alt="" loading="lazy" decoding="async">
+            <div>
+              <h3>Thank you for choosing to support Crypten!</h3>
+              <p>It truly means the world to us. Behind Crypten are years of experience and knowledge in many fields of computing, cryptography and AI among them. Every donation, whatever its size, tells us that this work matters to you — and that is what keeps us going.</p>
+            </div>
+          </div>
+          <p class="notice tone-brand">
+            <svg class="glyph" aria-hidden="true"><use href="#g-heart"/></svg>
+            <span>If Crypten has earned a place on your device, show us you love it. Your support is greatly appreciated — thank you, from all of us!</span>
+          </p>
+          </div>
+          <div class="donate-why-facts">
+          <h3 class="group-title">What your donation makes possible</h3>
+          <ul class="facts">
+            <li class="tone-workspace">
+              <span class="fact-icon"><svg class="glyph" aria-hidden="true"><use href="#g-refresh"/></svg></span>
+              <div><h4>Always up to date</h4><p>Technology and cryptography never stop evolving, and our team keeps up with every step. Your support keeps Crypten current, release after release.</p></div>
+            </li>
+            <li class="tone-encryption">
+              <span class="fact-icon"><svg class="glyph" aria-hidden="true"><use href="#g-bolt"/></svg></span>
+              <div><h4>Our costs covered</h4><p>Keeping Crypten running has real operational costs. Your donation helps cover them, so the work can go on.</p></div>
+            </li>
+            <li class="tone-key">
+              <span class="fact-icon"><svg class="glyph" aria-hidden="true"><use href="#g-gear"/></svg></span>
+              <div><h4>Answers and fixes</h4><p>Every email answered and every bug fixed takes time and care. Your support gives us that time.</p></div>
+            </li>
+            <li class="tone-password">
+              <span class="fact-icon"><svg class="glyph" aria-hidden="true"><use href="#g-layers"/></svg></span>
+              <div><h4>Crypten and beyond</h4><p>It helps us keep improving Crypten — and the other software we have built and are still building.</p></div>
+            </li>
+          </ul>
+          </div>
+        </div>
+
+        <div class="donate-how" data-reveal>
+          <h3 class="group-title">How to donate</h3>
+          <p class="muted">Scan a code with your wallet app, or copy the address. Send only a cryptocurrency the card names, on the network it names: coins sent on another network can be lost for good.</p>
+
+          <div class="tabs wallet-menu" data-tabs="wallet">
+            <div class="tablist coin-list" role="tablist" aria-label="Cryptocurrency" aria-orientation="vertical">
+              <button class="tab coin" type="button" role="tab" id="coin-bitcoin" aria-controls="wallet-bitcoin" aria-selected="true"><span class="coin-ticker">BTC</span><span class="coin-name">Bitcoin</span></button>
+              <button class="tab coin" type="button" role="tab" id="coin-ethereum" aria-controls="wallet-ethereum" aria-selected="false" tabindex="-1"><span class="coin-ticker">ETH</span><span class="coin-name">Ethereum USDC USDT</span></button>
+              <button class="tab coin" type="button" role="tab" id="coin-solana" aria-controls="wallet-solana" aria-selected="false" tabindex="-1"><span class="coin-ticker">SOL</span><span class="coin-name">Solana USDC USDT</span></button>
+              <button class="tab coin" type="button" role="tab" id="coin-polkadot" aria-controls="wallet-polkadot" aria-selected="false" tabindex="-1"><span class="coin-ticker">DOT</span><span class="coin-name">Polkadot</span></button>
+              <button class="tab coin" type="button" role="tab" id="coin-kaspa" aria-controls="wallet-kaspa" aria-selected="false" tabindex="-1"><span class="coin-ticker">KAS</span><span class="coin-name">Kaspa</span></button>
+            </div>
+
+            <!-- The wallets of support.yaml, in its order; a test compares them (core: WebsiteTest). -->
+            <article class="tabpanel wallet" role="tabpanel" id="wallet-bitcoin" aria-labelledby="coin-bitcoin">
+              <div class="wallet-qr" data-qr></div>
+              <div class="wallet-body">
+                <h4 class="wallet-name">Bitcoin</h4>
+                <p class="wallet-network">Bitcoin mainnet</p>
+                <code class="wallet-address" id="address-bitcoin">bc1qd2tm89qnqzudc9z6ylx6vae7gapsfqzdf0flcc</code>
+                <button class="button button-secondary copy" type="button" data-copy="#address-bitcoin" data-copied="The Bitcoin address is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy address</span></button>
+              </div>
+            </article>
+            <article class="tabpanel wallet" role="tabpanel" id="wallet-ethereum" aria-labelledby="coin-ethereum">
+              <div class="wallet-qr" data-qr></div>
+              <div class="wallet-body">
+                <h4 class="wallet-name">Ethereum USDC USDT</h4>
+                <p class="wallet-network">Ethereum mainnet (ERC-20)</p>
+                <code class="wallet-address" id="address-ethereum">0x902cF27b4bc49D3b7F0dcd6D16923F7D1f1Cac13</code>
+                <button class="button button-secondary copy" type="button" data-copy="#address-ethereum" data-copied="The Ethereum USDC USDT address is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy address</span></button>
+              </div>
+            </article>
+            <article class="tabpanel wallet" role="tabpanel" id="wallet-solana" aria-labelledby="coin-solana">
+              <div class="wallet-qr" data-qr></div>
+              <div class="wallet-body">
+                <h4 class="wallet-name">Solana USDC USDT</h4>
+                <p class="wallet-network">Solana mainnet</p>
+                <code class="wallet-address" id="address-solana">CwBWtPCXKJgT2DQMcfCRvA7CzRSqkGcmysKeeYbQr4jb</code>
+                <button class="button button-secondary copy" type="button" data-copy="#address-solana" data-copied="The Solana USDC USDT address is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy address</span></button>
+              </div>
+            </article>
+            <article class="tabpanel wallet" role="tabpanel" id="wallet-polkadot" aria-labelledby="coin-polkadot">
+              <div class="wallet-qr" data-qr></div>
+              <div class="wallet-body">
+                <h4 class="wallet-name">Polkadot</h4>
+                <p class="wallet-network">Polkadot mainnet</p>
+                <code class="wallet-address" id="address-polkadot">16aeK655ggi65xdyuPABaRDESUc8R78KfziBpQpQ9TnLybqP</code>
+                <button class="button button-secondary copy" type="button" data-copy="#address-polkadot" data-copied="The Polkadot address is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy address</span></button>
+              </div>
+            </article>
+            <article class="tabpanel wallet" role="tabpanel" id="wallet-kaspa" aria-labelledby="coin-kaspa">
+              <div class="wallet-qr" data-qr></div>
+              <div class="wallet-body">
+                <h4 class="wallet-name">Kaspa</h4>
+                <p class="wallet-network">Kaspa mainnet</p>
+                <code class="wallet-address" id="address-kaspa">kaspa:qr50z3dhxf346r0xmkj9p6h8evx8yvxu8y4t5v7h22wnysz7umwv7dlefqefy</code>
+                <button class="button button-secondary copy" type="button" data-copy="#address-kaspa" data-copied="The Kaspa address is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy address</span></button>
+              </div>
+            </article>
+          </div>
+
+          <div class="fingerprint">
+            <h3 class="group-title">Check the addresses</h3>
+            <p class="muted">Every copy of Crypten checks its donation details — these addresses, our contact address and the name of its developer, Obi Tirips — against their SHA3-512 fingerprint each time it starts, and does not start if they differ. This is that fingerprint:</p>
+            <code class="hash" id="donation-hash">3e75167db835aa31d405f1de6b35aa4a899d8a275b27ff4519d5b368a479d632c493f484d2d6becbfcee770b93ab89fddb9f0a16b198e14593c4e008a946f8a8</code>
+            <button class="button button-ghost copy" type="button" data-copy="#donation-hash" data-copied="The fingerprint is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy fingerprint</span></button>
+            <p class="muted">They are signed, too, with Crypten's own ML-DSA-87 key, which every copy of Crypten carries and checks them against. Its fingerprint, the same as under <a href="#download">Check your download</a>:</p>
+            <code class="hash hash-groups" data-key-fingerprint>f94b4e9b 92a88a5b cbe98be9 71c2065e 953d0828 95183af2 031d74df 5cc468b9 7b0058aa 8c0a6e6c 88f2d1f8 0304ba31 dd6d8ac8 f465b310 d34d8f9f 04a35b1a</code>
+            <p class="fingerprint-note"><svg class="glyph" aria-hidden="true"><use href="#g-shield-check"/></svg>Donate only to the addresses on this page or in the Crypten app. Addresses anyone sends you are not ours.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="refunds card tone-workspace" data-reveal>
+        <div class="refunds-head">
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-swap"/></svg></span>
+          <div>
+            <h3>Sent too much, or the wrong amount?</h3>
+            <p class="refunds-lead">No worries, and don't panic: you have 30 days to ask for it back.</p>
+          </div>
+        </div>
+        <p>Write to us by email — under <a href="#contact">Contact</a> here, or on About in the app, choose “Request to change a donation” — and tell us what went wrong: you sent too much, the wrong amount, or you changed your mind. We send it back to you. We are honest people, and honest developers.</p>
+        <h4>The rules</h4>
+        <ol class="rules">
+          <li>Write to us within 30 days of the day you sent the donation.</li>
+          <li>Send us the donation's transaction id.</li>
+          <li>Send us the wallet address you sent it from — the same one the transaction shows.</li>
+          <li>We send it back — all of it, or the part you did not mean to give — only to that same address.</li>
+        </ol>
+        <p class="muted">Why so strict: someone who never donated could claim a donation and ask for it to be sent to them. The transaction id and the address it came from show that the donation is yours, and it goes back nowhere else.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==== Questions =========================================================================================== -->
+  <section class="section" id="faq" aria-labelledby="faq-title" data-nav="contact">
+    <div class="container container-narrow">
+      <header class="section-head" data-reveal>
+        <p class="eyebrow tone-key"><svg class="glyph" aria-hidden="true"><use href="#g-info"/></svg>Questions</p>
+        <h2 id="faq-title">Good questions, straight answers</h2>
+      </header>
+      <div class="faq" data-reveal>
+        <details>
+          <summary>Is Crypten really free?<svg class="glyph" aria-hidden="true"><use href="#g-chevron-right"/></svg></summary>
+          <p>Yes. Crypten is free to use, for everyone, and it will stay free — forever. There is no account, no subscription and no advertising. Donations keep its development going, but they are never required.</p>
+        </details>
+        <details>
+          <summary>What if I forget my password or lose my key file?<svg class="glyph" aria-hidden="true"><use href="#g-chevron-right"/></svg></summary>
+          <p>Then what that key encrypted cannot be opened again — not by you, not by us, not by anyone. That is what strong encryption is for, and Crypten reminds you of it at every start. Keep a copy of your key file somewhere safe, a USB stick for example, and never forget its password.</p>
+        </details>
+        <details>
+          <summary>Does Crypten send my files or keys anywhere?<svg class="glyph" aria-hidden="true"><use href="#g-chevron-right"/></svg></summary>
+          <p>No. Crypten works on your computer and sends nothing anywhere: no cloud, no account, no telemetry. Your files, your keys and your passwords stay with you.</p>
+        </details>
+        <details>
+          <summary>What if my computer crashes while Crypten is working?<svg class="glyph" aria-hidden="true"><use href="#g-chevron-right"/></svg></summary>
+          <p>Nothing is lost. Crypten never works on your original and records every step as it goes, so the next time it starts it finishes the interrupted work or rolls it back. You are left with the state before the operation or the state after it — never a half-written file.</p>
+        </details>
+        <details>
+          <summary>Can I open my files on another computer?<svg class="glyph" aria-hidden="true"><use href="#g-chevron-right"/></svg></summary>
+          <p>Yes. Crypten on Windows and Linux reads and writes the same formats. Bring the encrypted file and its key file, add the key file to Crypten there, and unlock it with its password.</p>
+        </details>
+        <details>
+          <summary>Which cryptography does Crypten use?<svg class="glyph" aria-hidden="true"><use href="#g-chevron-right"/></svg></summary>
+          <p>AES-256-GCM — cryptography version CV1, through Bouncy Castle — in authenticated 1 MiB segments, with a fresh HKDF-SHA-512 subkey for every file. Key files are locked with your password through Argon2id, and every result is checked against SHA3-512 hashes. A stronger algorithm can be added later as a new version, without touching anything already encrypted.</p>
+        </details>
+        <details>
+          <summary>What happens if I uninstall Crypten?<svg class="glyph" aria-hidden="true"><use href="#g-chevron-right"/></svg></summary>
+          <p>On a computer, uninstalling removes only the program: your key files and workspaces stay where you saved them. Before you uninstall, or to move to another device, use <em>Export everything</em> (Settings or About): it copies your key files, workspaces and encrypted files into one folder — a USB drive works — encrypted, as we advise, or unencrypted after a clear warning that anyone who opens that folder can read it. The Android app, still in development, keeps its keys and workspaces in its own storage, which an uninstall deletes: it will keep an encrypted copy in a backup folder you choose and restore from it. Always keep copies of your key files, and keep your passwords yourself — Crypten never stores one.</p>
+        </details>
+        <details>
+          <summary>Will someone from Crypten ever contact me?<svg class="glyph" aria-hidden="true"><use href="#g-chevron-right"/></svg></summary>
+          <p>Only to answer when you write to us, and only from <a href="mailto:obi.tirips@gmail.com">obi.tirips@gmail.com</a>. No one from Crypten will ever ask for your password, your keys or your data: a message that does is not from us.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==== Contact ============================================================================================= -->
+  <section class="section" id="contact" aria-labelledby="contact-title">
+    <div class="container">
+      <header class="section-head" data-reveal>
+        <p class="eyebrow tone-brand"><svg class="glyph" aria-hidden="true"><use href="#g-mail"/></svg>Contact</p>
+        <h2 id="contact-title">Write to us</h2>
+        <p class="section-lead">A bug, an idea, something that should work differently, or a donation to send back: pick what you are writing about, and its email template shows beside it — an example to copy into a new message in your own mail program.</p>
+      </header>
+      <div class="contact-grid" data-tabs="mail">
+        <div class="contact card tone-brand" data-reveal>
+          <p class="contact-label">Our one and only address</p>
+          <p class="contact-address"><a id="contact-address" href="mailto:obi.tirips@gmail.com">obi.tirips@gmail.com</a></p>
+          <div class="contact-actions">
+            <button class="button button-primary copy" type="button" data-copy="#contact-address" data-copied="The address is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy address</span></button>
+          </div>
+          <div class="topic-picker">
+            <p class="topics-lead">What are you writing about? Pick one to see its email template.</p>
+            <!-- Each template is the app's own mail form (core-desktop Contact.Topic; WebsiteTest compares them). -->
+            <div class="topics" role="tablist" aria-label="Email templates">
+              <button class="topic tone-danger" type="button" role="tab" id="topic-bug" aria-controls="template-bug" aria-selected="true"><span class="topic-icon"><svg class="glyph" aria-hidden="true"><use href="#g-warning"/></svg></span>Report a bug<svg class="glyph topic-arrow" aria-hidden="true"><use href="#g-chevron-right"/></svg></button>
+              <button class="topic tone-encryption" type="button" role="tab" id="topic-feature" aria-controls="template-feature" aria-selected="false" tabindex="-1"><span class="topic-icon"><svg class="glyph" aria-hidden="true"><use href="#g-bolt"/></svg></span>Request a feature<svg class="glyph topic-arrow" aria-hidden="true"><use href="#g-chevron-right"/></svg></button>
+              <button class="topic tone-key" type="button" role="tab" id="topic-change" aria-controls="template-change" aria-selected="false" tabindex="-1"><span class="topic-icon"><svg class="glyph" aria-hidden="true"><use href="#g-swap"/></svg></span>Request a change<svg class="glyph topic-arrow" aria-hidden="true"><use href="#g-chevron-right"/></svg></button>
+              <button class="topic tone-workspace" type="button" role="tab" id="topic-donation" aria-controls="template-donation" aria-selected="false" tabindex="-1"><span class="topic-icon"><svg class="glyph" aria-hidden="true"><use href="#g-heart"/></svg></span>Request to change a donation<svg class="glyph topic-arrow" aria-hidden="true"><use href="#g-chevron-right"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <div class="templates" data-reveal>
+          <article class="card mail-template tabpanel tone-danger" role="tabpanel" id="template-bug" aria-labelledby="topic-bug" tabindex="0">
+            <p class="template-tag"><svg class="glyph" aria-hidden="true"><use href="#g-mail"/></svg>Email template — an example to copy</p>
+            <h3>Report a bug</h3>
+            <p class="template-note">Nothing is sent from this page. Copy the address, the subject and the message into a new email in your own mail program, answer the questions, then send it.</p>
+            <dl class="template">
+              <div class="template-line"><dt>To</dt><dd><code id="template-bug-to">obi.tirips@gmail.com</code><button class="button button-ghost copy" type="button" data-copy="#template-bug-to" data-copied="The address is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy</span></button></dd></div>
+              <div class="template-line"><dt>Subject</dt><dd><code id="template-bug-subject">Crypten: bug report</code><button class="button button-ghost copy" type="button" data-copy="#template-bug-subject" data-copied="The subject is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy</span></button></dd></div>
+              <div class="template-line template-message"><dt>Message</dt><dd><pre id="template-bug-body">What happened:
+
+
+What you expected to happen:
+
+
+Steps to make it happen again:
+1. 
+
+Error log (optional): if you like, attach the error log file from the day it happened - or a .zip of several - from the folder "Show error log" opens on About. It holds no passwords, keys, files, file names or anything that identifies you. Please attach nothing else: we never need your keys, passwords or documents.
+
+--
+Your Crypten version and system (Crypten shows them on About):</pre><button class="button button-ghost copy" type="button" data-copy="#template-bug-body" data-copied="The message is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy message</span></button></dd></div>
+            </dl>
+          </article>
+          <article class="card mail-template tabpanel tone-encryption" role="tabpanel" id="template-feature" aria-labelledby="topic-feature" tabindex="0">
+            <p class="template-tag"><svg class="glyph" aria-hidden="true"><use href="#g-mail"/></svg>Email template — an example to copy</p>
+            <h3>Request a feature</h3>
+            <p class="template-note">Nothing is sent from this page. Copy the address, the subject and the message into a new email in your own mail program, answer the questions, then send it.</p>
+            <dl class="template">
+              <div class="template-line"><dt>To</dt><dd><code id="template-feature-to">obi.tirips@gmail.com</code><button class="button button-ghost copy" type="button" data-copy="#template-feature-to" data-copied="The address is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy</span></button></dd></div>
+              <div class="template-line"><dt>Subject</dt><dd><code id="template-feature-subject">Crypten: feature request</code><button class="button button-ghost copy" type="button" data-copy="#template-feature-subject" data-copied="The subject is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy</span></button></dd></div>
+              <div class="template-line template-message"><dt>Message</dt><dd><pre id="template-feature-body">The feature you would like:
+
+
+What it would help you do:
+
+--
+Your Crypten version and system (Crypten shows them on About):</pre><button class="button button-ghost copy" type="button" data-copy="#template-feature-body" data-copied="The message is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy message</span></button></dd></div>
+            </dl>
+          </article>
+          <article class="card mail-template tabpanel tone-key" role="tabpanel" id="template-change" aria-labelledby="topic-change" tabindex="0">
+            <p class="template-tag"><svg class="glyph" aria-hidden="true"><use href="#g-mail"/></svg>Email template — an example to copy</p>
+            <h3>Request a change</h3>
+            <p class="template-note">Nothing is sent from this page. Copy the address, the subject and the message into a new email in your own mail program, answer the questions, then send it.</p>
+            <dl class="template">
+              <div class="template-line"><dt>To</dt><dd><code id="template-change-to">obi.tirips@gmail.com</code><button class="button button-ghost copy" type="button" data-copy="#template-change-to" data-copied="The address is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy</span></button></dd></div>
+              <div class="template-line"><dt>Subject</dt><dd><code id="template-change-subject">Crypten: change request</code><button class="button button-ghost copy" type="button" data-copy="#template-change-subject" data-copied="The subject is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy</span></button></dd></div>
+              <div class="template-line template-message"><dt>Message</dt><dd><pre id="template-change-body">What should work differently:
+
+
+How it works now, and why that is a problem:
+
+--
+Your Crypten version and system (Crypten shows them on About):</pre><button class="button button-ghost copy" type="button" data-copy="#template-change-body" data-copied="The message is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy message</span></button></dd></div>
+            </dl>
+          </article>
+          <article class="card mail-template tabpanel tone-workspace" role="tabpanel" id="template-donation" aria-labelledby="topic-donation" tabindex="0">
+            <p class="template-tag"><svg class="glyph" aria-hidden="true"><use href="#g-mail"/></svg>Email template — an example to copy</p>
+            <h3>Request to change a donation</h3>
+            <p class="template-note">Nothing is sent from this page. Copy the address, the subject and the message into a new email in your own mail program, answer the questions, then send it.</p>
+            <dl class="template">
+              <div class="template-line"><dt>To</dt><dd><code id="template-donation-to">obi.tirips@gmail.com</code><button class="button button-ghost copy" type="button" data-copy="#template-donation-to" data-copied="The address is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy</span></button></dd></div>
+              <div class="template-line"><dt>Subject</dt><dd><code id="template-donation-subject">Crypten: donation change request</code><button class="button button-ghost copy" type="button" data-copy="#template-donation-subject" data-copied="The subject is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy</span></button></dd></div>
+              <div class="template-line template-message"><dt>Message</dt><dd><pre id="template-donation-body">The donation's transaction id:
+
+
+The wallet address you sent it from:
+
+
+The cryptocurrency, and the network you sent it on:
+
+
+The day you sent it:
+
+
+What went wrong, and what you would like - all of it back, or the part you did not mean to give:
+
+--
+Your Crypten version and system (Crypten shows them on About):</pre><button class="button button-ghost copy" type="button" data-copy="#template-donation-body" data-copied="The message is copied."><svg class="glyph" aria-hidden="true"><use href="#g-copy"/></svg><span>Copy message</span></button></dd></div>
+            </dl>
+          </article>
+        </div>
+      </div>
+      <aside class="warning contact-warning tone-danger" aria-labelledby="contact-warning-title" data-reveal>
+        <div class="warning-head">
+          <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-warning"/></svg></span>
+          <h3 id="contact-warning-title">Before you write — or answer</h3>
+        </div>
+        <p>We will never ask for your password, your keys or your data. Write only to the address on this page, and always check who a message really comes from before you answer it, open its links or download what it sends.</p>
+        <p class="muted">For a donation sent by mistake, read <a href="#donate">the rules</a> first: they say what to send us.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ==== Who is Obi Tirips? ================================================================================== -->
+  <section class="section obi" id="obi" aria-labelledby="obi-title">
+    <div class="container">
+      <div class="obi-intro">
+        <div class="obi-copy">
+          <header class="section-head section-head-start" data-reveal>
+            <p class="eyebrow tone-password"><svg class="glyph" aria-hidden="true"><use href="#g-shield-check"/></svg>The developer behind Crypten</p>
+            <h2 id="obi-title">Who is <span class="obi-name">Obi Tirips</span>?</h2>
+          </header>
+          <p class="obi-lead" data-reveal>A programmer — and a promise.</p>
+          <p class="obi-text" data-reveal>Obi Tirips is an experienced programmer who builds the tools that freedom needs — and gives them to everyone, for free.</p>
+          <div class="expertise" data-reveal>
+            <p class="expertise-label" id="expertise-label">Specialized in</p>
+            <ul class="expertise-list" aria-labelledby="expertise-label">
+              <li class="tone-key"><svg class="glyph" aria-hidden="true"><use href="#g-key"/></svg>Cryptography</li>
+              <li class="tone-workspace"><svg class="glyph" aria-hidden="true"><use href="#g-shield-check"/></svg>Digital security</li>
+              <li class="tone-brand"><svg class="glyph" aria-hidden="true"><use href="#g-network"/></svg>Decentralized systems</li>
+              <li class="tone-encryption"><svg class="glyph" aria-hidden="true"><use href="#g-layers"/></svg>Financial systems</li>
+            </ul>
+          </div>
+          <p class="obi-text muted" data-reveal>Obi is a guardian of true freedom and of everything that lives — and stands against evil, wherever it rules.</p>
+        </div>
+        <div class="card dossier tone-password" data-reveal>
+          <div class="dossier-head">
+            <p class="dossier-label">Profile</p>
+          </div>
+          <div class="emblem portrait">
+            <svg class="emblem-art" viewBox="0 0 240 240" aria-hidden="true" focusable="false">
+              <g class="emblem-orbit emblem-orbit-reverse">
+                <circle class="emblem-path" cx="120" cy="120" r="110"/>
+                <circle class="emblem-satellite" cx="120" cy="230" r="5"/>
+              </g>
+            </svg>
+            <img class="portrait-photo" src="img/obi-tirips.webp" width="640" height="640" loading="lazy" decoding="async"
+                 alt="Obi Tirips's profile picture: a hooded figure in white and gold, with a halo of light behind the hood and wings of light at the shoulder.">
+          </div>
+          <dl class="dossier-facts">
+            <div><dt>Name</dt><dd>Obi Tirips</dd></div>
+            <div><dt>Profession</dt><dd>Programmer</dd></div>
+            <div><dt>Works for</dt><dd>Freedom</dd></div>
+            <div><dt>Tools</dt><dd>Knowledge and technology</dd></div>
+            <div><dt>Stands against</dt><dd>Evil, in every form</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="manifesto">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow tone-password"><svg class="glyph" aria-hidden="true"><use href="#g-heart"/></svg>In Obi's own words</p>
+          <h3 class="obi-subtitle">The path we choose</h3>
+        </header>
+        <div class="chapters">
+          <article class="chapter tone-danger" data-reveal>
+            <span class="chapter-number" aria-hidden="true">I</span>
+            <div class="chapter-body">
+              <h4>A system thousands of years old</h4>
+              <p>Governments have grown corrupt beyond repair. The way we are ruled is a system thousands of years old, and it must be replaced with something better — before it enslaves humanity even more, and before it wipes us off the face of the Earth, together with this planet and everything that lives on it.</p>
+            </div>
+          </article>
+          <article class="chapter tone-encryption" data-reveal>
+            <span class="chapter-number" aria-hidden="true">II</span>
+            <div class="chapter-body">
+              <h4>The government is not your friend</h4>
+              <p>Not anywhere in the world. Governments are out of control, and they rule for themselves. They manipulate us and divide us — the people. They take the money you worked hard for and hand it to themselves, to giant corporations, to the elites and to useless projects; whatever is left, if anything, trickles down to the poor.</p>
+              <p class="chapter-turn">They control a huge part of the economy. <strong>But not cryptocurrencies.</strong></p>
+            </div>
+          </article>
+          <article class="chapter tone-password" data-reveal>
+            <span class="chapter-number" aria-hidden="true">III</span>
+            <div class="chapter-body">
+              <h4>Our spirit must catch up</h4>
+              <p class="chapter-quote">Every technology can be used for good or for evil.</p>
+              <p>Humanity has come a long way technologically, but only a little spiritually — and our character and our spirit must grow just as much. As human beings, we have to ask ourselves which path we are taking, and what we are choosing.</p>
+            </div>
+          </article>
+          <article class="chapter tone-workspace" data-reveal>
+            <span class="chapter-number" aria-hidden="true">IV</span>
+            <div class="chapter-body">
+              <h4>Freedom, built in code</h4>
+              <p>I will do all I can to bring freedom to humankind — through technology, through anonymity, through independence. Not by asking for it, but by building it, and by giving it to everyone, for free.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="awaken">
+        <p class="awaken-call" data-reveal>Open your eyes.<br><span class="awaken-accent">Wake up.</span></p>
+        <ul class="cards cards-4 before-list">
+          <li class="card tone-danger" data-reveal>
+            <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-unlock"/></svg></span>
+            <p class="before-verb">Before they take</p>
+            <p class="before-what">your freedom</p>
+          </li>
+          <li class="card tone-danger" data-reveal>
+            <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-heart"/></svg></span>
+            <p class="before-verb">Before they control</p>
+            <p class="before-what">your life</p>
+          </li>
+          <li class="card tone-danger" data-reveal>
+            <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-swap"/></svg></span>
+            <p class="before-verb">Before they decide</p>
+            <p class="before-what">what you may buy and sell</p>
+          </li>
+          <li class="card tone-danger" data-reveal>
+            <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-padlock"/></svg></span>
+            <p class="before-verb">Before they control</p>
+            <p class="before-what">your bank account</p>
+          </li>
+        </ul>
+      </div>
+
+      <blockquote class="creed" data-reveal>
+        <p class="creed-line">Knowledge and technology are our freedom.</p>
+        <p class="creed-call">Believe me. <strong>Oppose their system.</strong> Do not accept it. Do not adopt it.</p>
+      </blockquote>
+
+      <div class="roadmap">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow tone-workspace"><svg class="glyph" aria-hidden="true"><use href="#g-compass"/></svg>What is coming</p>
+          <h3 class="obi-subtitle">This software is only a small step</h3>
+          <p class="section-lead">— of what is about to come.</p>
+        </header>
+        <ol class="milestones">
+          <li class="milestone tone-encryption" data-reveal>
+            <span class="milestone-dot" aria-hidden="true"><svg class="glyph"><use href="#g-monitor"/></svg></span>
+            <p class="milestone-when">Here today</p>
+            <h4>Crypten for the desktop</h4>
+            <p>Files, folders and whole workspaces, encrypted on Windows and Linux. Free, forever.</p>
+          </li>
+          <li class="milestone tone-brand" data-reveal>
+            <span class="milestone-dot" aria-hidden="true"><svg class="glyph"><use href="#g-phone"/></svg></span>
+            <p class="milestone-when">The next step</p>
+            <h4>Crypten for Android</h4>
+            <p>The same protection and the same formats, in your pocket.</p>
+          </li>
+          <li class="milestone tone-workspace" data-reveal>
+            <span class="milestone-dot" aria-hidden="true"><svg class="glyph"><use href="#g-network"/></svg></span>
+            <p class="milestone-when">Mid 2027 · the big surprise</p>
+            <h4>Neuralchain</h4>
+            <p>A post-quantum cryptocurrency financial system. The evolution of the blockchain.</p>
+          </li>
+        </ol>
+
+        <article class="neuralchain tone-workspace" aria-labelledby="neuralchain-title" data-reveal>
+          <div class="neuralchain-inner">
+            <div class="neuralchain-head">
+              <div class="neuralchain-copy">
+                <p class="eyebrow tone-workspace"><svg class="glyph" aria-hidden="true"><use href="#g-network"/></svg>The big surprise · mid 2027</p>
+                <h4 class="neuralchain-title" id="neuralchain-title">Neuralchain</h4>
+                <p class="neuralchain-tagline">New concepts. A new architecture. The evolution of the blockchain.</p>
+                <p class="neuralchain-text">A new post-quantum (PQC) cryptocurrency financial system — decentralized, open source and free, for all of you. I believe the elites' next plan is a great financial crisis and a time of global instability. Neuralchain is meant to be ready before it comes, so that you hold what is yours, on a network nobody owns.</p>
+              </div>
+              <svg class="neural-net" viewBox="0 0 400 240" aria-hidden="true" focusable="false">
+                <g class="net-links">
+                  <path d="M50 50 L200 30 M50 50 L200 90 M50 50 L200 150 M50 50 L200 210"/>
+                  <path d="M50 120 L200 30 M50 120 L200 90 M50 120 L200 150 M50 120 L200 210"/>
+                  <path d="M50 190 L200 30 M50 190 L200 90 M50 190 L200 150 M50 190 L200 210"/>
+                  <path d="M200 30 L350 50 M200 30 L350 120 M200 30 L350 190"/>
+                  <path d="M200 90 L350 50 M200 90 L350 120 M200 90 L350 190"/>
+                  <path d="M200 150 L350 50 M200 150 L350 120 M200 150 L350 190"/>
+                  <path d="M200 210 L350 50 M200 210 L350 120 M200 210 L350 190"/>
+                </g>
+                <g class="net-pulses">
+                  <path d="M50 120 L200 30 L350 120" pathLength="100"/>
+                  <path d="M50 50 L200 150 L350 50" pathLength="100"/>
+                  <path d="M50 190 L200 90 L350 190" pathLength="100"/>
+                  <path d="M50 120 L200 210 L350 120" pathLength="100"/>
+                </g>
+                <g class="net-nodes">
+                  <circle cx="50" cy="50" r="8"/>
+                  <circle cx="50" cy="120" r="8"/>
+                  <circle cx="50" cy="190" r="8"/>
+                  <circle cx="200" cy="30" r="8"/>
+                  <circle cx="200" cy="90" r="8"/>
+                  <circle cx="200" cy="150" r="8"/>
+                  <circle cx="200" cy="210" r="8"/>
+                  <circle cx="350" cy="50" r="8"/>
+                  <circle cx="350" cy="120" r="8"/>
+                  <circle cx="350" cy="190" r="8"/>
+                </g>
+              </svg>
+            </div>
+            <ul class="cards cards-3 neural-features">
+              <li class="card tone-key">
+                <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-shield-check"/></svg></span>
+                <h5>Post-quantum signatures</h5>
+                <p>ML-DSA-87, the strongest level of the FIPS 204 standard, made to withstand quantum computers as well as today's. The same algorithm already signs Crypten.</p>
+              </li>
+              <li class="card tone-workspace">
+                <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-refresh"/></svg></span>
+                <h5>Upgradeable cryptography</h5>
+                <p>Its algorithms can be replaced without compromising the network — so it stays safe, however far computers go.</p>
+              </li>
+              <li class="card tone-brand">
+                <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-globe"/></svg></span>
+                <h5>Decentralized, open source, free</h5>
+                <p>No owner, no gatekeeper, no permission to ask. For everyone.</p>
+              </li>
+              <li class="card tone-password">
+                <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-shield-lock"/></svg></span>
+                <h5>An extremely safe consensus</h5>
+                <p>The way the network agrees is designed, first of all, to be safe.</p>
+              </li>
+              <li class="card tone-encryption">
+                <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-key"/></svg></span>
+                <h5>Heritage and succession</h5>
+                <p>What you own can pass on to the people you choose.</p>
+              </li>
+              <li class="card tone-decryption">
+                <span class="card-icon"><svg class="glyph" aria-hidden="true"><use href="#g-bolt"/></svg></span>
+                <h5>Instant, scheduled, recurring</h5>
+                <p>New types of transactions: right now, at a time you set, or again and again.</p>
+              </li>
+            </ul>
+          </div>
+        </article>
+      </div>
+
+      <div class="obi-sign" data-reveal>
+        <p class="pledge">Freedom through technology, anonymity and independence.</p>
+        <p class="signature">— Obi Tirips</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a class="brand" href="#home">
+        <svg class="glyph brand-mark" aria-hidden="true"><use href="#g-shield-lock"/></svg>
+        <span class="brand-name">Crypten</span>
+      </a>
+      <p>Encrypt everything. Lose nothing.</p>
+      <p class="muted">Free for everyone, forever.</p>
+    </div>
+    <nav class="footer-links" aria-label="More">
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#security">Security</a></li>
+        <li><a href="#privacy">Privacy</a></li>
+        <li><a href="privacy.html">Privacy policy</a></li>
+        <li><a href="#download">Download</a></li>
+      </ul>
+      <ul>
+        <li><a href="#free">Free forever</a></li>
+        <li><a href="#donate">Donate</a></li>
+        <li><a href="#faq">Questions</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#obi">Who is Obi Tirips?</a></li>
+      </ul>
+    </nav>
+    <p class="footer-note tone-workspace">
+      <svg class="glyph" aria-hidden="true"><use href="#g-shield-check"/></svg>
+      <span>This website sets no cookies, runs no trackers and loads nothing from anyone else: everything you see comes from its own few files.</span>
+    </p>
+  </div>
+  <div class="container footer-bottom">
+    <p>© 2026 Crypten · Version <span data-version>0.0.1</span></p>
+    <a class="to-top" href="#home">Back to top<svg class="glyph" aria-hidden="true"><use href="#g-arrow-up"/></svg></a>
+  </div>
+</footer>
+
+<div class="toast" role="status" aria-live="polite" data-toast></div>
+</body>
+</html>
